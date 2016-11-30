@@ -87,7 +87,7 @@
                                 <!-- /input-group -->
                             </li>
                             <li>
-                                <a href="{{ url('/home') }}"><i class="fa fa-dashboard fa-fw"></i> Home</a>
+                                <a href="{{ url('/home') }}"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
                             </li>
 
                         </ul>
