@@ -22,3 +22,9 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index');
+
+
+Route::group(['prefix' => 'subject'], function () {
+    Route::get('/section/{section}/subject/{subject}', ['as' => 'subject.index','uses' => 'SubjectController@index']);
+    Route::get('/encode/section/{section}/subject/{subject}', ['as' => 'subject.encode','uses' => 'SubjectController@encode']);
+});

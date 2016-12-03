@@ -66,6 +66,20 @@ return [
             'engine' => null,
         ],
 
+        'mysql_two' => [
+            'driver' => 'mysql',
+            'host' => '172.20.100.251',
+            'port' => '3306',
+            'database' => 'ies',
+            'username' => 'encoding',
+            'password' => 'p@ssw0rd',
+            'charset' => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+            'prefix' => '',
+            'strict' => true,
+            'engine' => null,
+        ],
+
         'pgsql' => [
             'driver' => 'pgsql',
             'host' => env('DB_HOST', '127.0.0.1'),

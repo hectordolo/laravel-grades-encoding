@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
-@section('content')
-<div class="container">
+@section('page-content')
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
@@ -9,6 +8,20 @@
                 <div class="panel-body">
                     <form class="form-horizontal" role="form" method="POST" action="{{ url('/register') }}">
                         {{ csrf_field() }}
+
+                        <div class="form-group{{ $errors->has('employee_id') ? ' has-error' : '' }}">
+                            <label for="employee_id" class="col-md-4 control-label">Employee ID</label>
+
+                            <div class="col-md-6">
+                                <input id="employee_id" type="text" class="form-control" name="employee_id" value="{{ old('employee_id') }}" required autofocus>
+
+                                @if ($errors->has('employee_id'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('employee_id') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
 
                         <div class="form-group{{ $errors->has('first_name') ? ' has-error' : '' }}">
                             <label for="first_name" class="col-md-4 control-label">First Name</label>
@@ -38,6 +51,21 @@
                             </div>
                         </div>
 
+
+                        <div class="form-group{{ $errors->has('sex') ? ' has-error' : '' }}">
+                            <label for="sex" class="col-md-4 control-label">Sex</label>
+
+                            <div class="col-md-6">
+                                <input id="sex" type="text" class="form-control" name="sex" value="{{ old('sex') }}" required autofocus>
+
+                                @if ($errors->has('sex'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('sex') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
                         <div class="form-group{{ $errors->has('username') ? ' has-error' : '' }}">
                             <label for="username" class="col-md-4 control-label">Username</label>
 
@@ -61,6 +89,34 @@
                                 @if ($errors->has('email'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('email') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group{{ $errors->has('active') ? ' has-error' : '' }}">
+                            <label for="active" class="col-md-4 control-label">Active?</label>
+
+                            <div class="col-md-6">
+                                <input id="active" type="active" class="form-control" name="active" value="{{ old('active') }}" required>
+
+                                @if ($errors->has('active'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('active') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group{{ $errors->has('status') ? ' has-error' : '' }}">
+                            <label for="status" class="col-md-4 control-label">Status</label>
+
+                            <div class="col-md-6">
+                                <input id="status" type="status" class="form-control" name="status" value="{{ old('status') }}" required>
+
+                                @if ($errors->has('status'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('status') }}</strong>
                                     </span>
                                 @endif
                             </div>
@@ -100,5 +156,4 @@
             </div>
         </div>
     </div>
-</div>
 @endsection
