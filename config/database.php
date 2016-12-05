@@ -68,7 +68,7 @@ return [
 
         'mysql_two' => [
             'driver' => 'mysql',
-            'host' => '172.20.100.251',
+            'host' => '127.0.0.1',
             'port' => '3306',
             'database' => 'ies',
             'username' => 'encoding',
