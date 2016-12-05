@@ -10,4 +10,5 @@ class Students extends Model
 
     protected $connection = 'mysql_two';
 
+
 }

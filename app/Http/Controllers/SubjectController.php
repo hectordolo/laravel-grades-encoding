@@ -294,11 +294,19 @@ class SubjectController extends Controller
 
     public function view($section, $subject){
 
-        return view('subject.view', compact('section', 'subject'));
+        $students = Registrations::where('sectioncode', $section)
+            ->where('subjectcode', $subject)
+            ->get();
+
+        return view('subject.view', compact('section', 'subject', 'students'));
     }
 
     public function encode($section, $subject){
 
-        return view('subject.encode', compact('section', 'subject'));
+        $students = Registrations::where('sectioncode', $section)
+            ->where('subjectcode', $subject)
+            ->get();
+
+        return view('subject.encode', compact('section', 'subject', 'students'));
     }
 }
