@@ -8,7 +8,7 @@
         <!-- CSRF Token -->
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+        <title>@yield('page-title')</title>
 
         <!-- Bootstrap Core CSS -->
         <link href="{{ URL::asset('vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
@@ -28,6 +28,8 @@
                 'csrfToken' => csrf_token(),
             ]); ?>
         </script>
+
+        @yield('header-scripts')
 
     </head>
     <body>
@@ -102,7 +104,7 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-lg-12">
-                            <h3 class="page-header">@yield('page-header')</h3>
+                            <h3 class="page-header no-print">@yield('page-header')</h3>
                         </div>
                     </div>
 

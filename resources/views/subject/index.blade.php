@@ -24,7 +24,7 @@
                                 <th style="width:15%">Time</th>
                                 <th style="width:10%">Room</th>
                                 <th style="width:5%">Students</th>
-                                <th style="width:10%">Action</th>
+                                <th style="width:15%">Action</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -40,6 +40,7 @@
                                     <td>
                                         <a href="{{route('subject.view', [$subject->sectioncode, $subject->subjectcode])}}" type="button" class="btn btn-default btn-sm" title="View" ><i class="fa fa-file-o"></i></a>
                                         <a href="{{route('subject.encode', [$subject->sectioncode, $subject->subjectcode])}}" type="button" class="btn btn-default btn-sm" title="Encode" ><i class="fa fa-edit"></i></a>
+                                        <a href="{{route('subject.print', [$subject->sectioncode, $subject->subjectcode])}}" type="button" class="btn btn-default btn-sm" title="Print" ><i class="fa fa-print"></i></a>
                                     </td>
                                 </tr>
                             @endforeach

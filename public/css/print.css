@@ -1,0 +1,37 @@
+@media print {
+
+    @page {
+        size: 8.5in 13in;
+        margin: 0.25in 1cm 1cm 1cm;
+        font-family: "Times New Roman";
+    }
+
+    .no-print{
+        display: none !important;
+    }
+
+    .table{
+        margin: 0 !important;
+        padding: 0 !important;
+        border:none !important;
+    }
+
+    div{
+        border:none !important;
+    }
+
+    .table tr th{
+        margin: 0 !important;
+        padding: 0 !important;
+        border:none !important;
+        font-size: 12px;
+    }
+
+    .table tr td{
+        margin: 0 !important;
+        padding: 0 !important;
+        border:none !important;
+        font-size: 12px;
+    }
+
+}

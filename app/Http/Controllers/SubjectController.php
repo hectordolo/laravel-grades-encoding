@@ -8,6 +8,7 @@ use App\Models\GlobalVar;
 use App\Models\Subjects;
 use App\Models\Registrations;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 use Illuminate\Support\Facades\Input;
 
@@ -293,6 +294,84 @@ class SubjectController extends Controller
         return view('subject.index', compact('subjects'));
     }
 
+    public function printing($section, $subject){
+
+        $carbon = Carbon::now()->addHour(8);
+
+        $date = $carbon->toDayDateTimeString();
+
+        $males = [];
+
+        $females = [];
+
+        $students = DB::connection('mysql_two')->table('registrations')
+            ->join('students', 'registrations.studentcode', '=', 'students.studentcode')
+            ->select('registrations.prelimgrade', 'registrations.midtermgrade', 'registrations.finalgrade', 'registrations.studentcode', 'students.lname', 'students.fname', 'students.sex', 'students.mname')
+            ->where('registrations.sectioncode', $section)
+            ->where('registrations.subjectcode', $subject)
+            ->orderBy('students.lname', 'ASC')
+            ->get();
+
+        foreach($students as $student){
+
+            $average = round(($student->prelimgrade+$student->midtermgrade+$student->finalgrade)/3, 2);
+
+            if($average >= 97 && $average <= 100){
+                $grade = 1.00;
+                $remarks = 'PASSED';
+            }elseif($average >= 94 && $average <= 96){
+                $grade = 1.25;
+                $remarks = 'PASSED';
+            }elseif($average >= 91 && $average <= 93){
+                $grade = 1.50;
+                $remarks = 'PASSED';
+            }elseif($average >= 88 && $average <= 90){
+                $grade = 1.75;
+                $remarks = 'PASSED';
+            }elseif($average >= 85 && $average <= 87){
+                $grade = 2.00;
+                $remarks = 'PASSED';
+            }elseif($average >= 82 && $average <= 84){
+                $grade = 2.25;
+                $remarks = 'PASSED';
+            }elseif($average >= 79 && $average <= 81){
+                $grade = 2.50;
+                $remarks = 'PASSED';
+            }elseif($average >= 76 && $average <= 78){
+                $grade = 2.75;
+                $remarks = 'PASSED';
+            }elseif($average == 75){
+                $grade = 3.00;
+                $remarks = 'PASSED';
+            }else{
+                $remarks = 'FAILED';
+                $grade = '5.00';
+            }
+
+            if($student->sex==1){
+                $males[] = (object)['studentcode'=>$student->studentcode,
+                    'studentname'=>$student->lname.', '.$student->fname,
+                    'prelimgrade'=>$student->prelimgrade,
+                    'midtermgrade'=>$student->midtermgrade,
+                    'finalgrade'=>$student->finalgrade,
+                    'average' => $average,
+                    'grade' => $grade,
+                    'remarks' => $remarks];
+            }else{
+                $females[] = (object)['studentcode'=>$student->studentcode,
+                    'studentname'=>$student->lname.', '.$student->fname,
+                    'prelimgrade'=>$student->prelimgrade,
+                    'midtermgrade'=>$student->midtermgrade,
+                    'finalgrade'=>$student->finalgrade,
+                    'average' => $average,
+                    'grade' => $grade,
+                    'remarks' => $remarks];
+            }
+        }
+
+        return view('subject.print', compact('section', 'subject', 'males','females', 'date'));
+    }
+
     public function view($section, $subject){
 
         $males = [];
@@ -309,13 +388,30 @@ class SubjectController extends Controller
 
         foreach($students as $student){
 
-            $average = ($student->prelimgrade+$student->midtermgrade+$student->finalgrade)/3;
+            $average = round(($student->prelimgrade+$student->midtermgrade+$student->finalgrade)/3, 2);
+
             $grade = 0;
 
             if($average >= 97 && $average <= 100){
-                $grade = 1;
+                $grade = 1.00;
+            }elseif($average >= 94 && $average <= 96){
+                $grade = 1.25;
+            }elseif($average >= 91 && $average <= 93){
+                $grade = 1.50;
+            }elseif($average >= 88 && $average <= 90){
+                $grade = 1.75;
+            }elseif($average >= 85 && $average <= 87){
+                $grade = 2.00;
+            }elseif($average >= 82 && $average <= 84){
+                $grade = 2.25;
+            }elseif($average >= 79 && $average <= 81){
+                $grade = 2.50;
+            }elseif($average >= 76 && $average <= 78){
+                $grade = 2.75;
+            }elseif($average == 75){
+                $grade = 3.00;
             }else{
-                $grade = 'Fail';
+                $grade = 'Failed';
             }
 
             if($student->sex==1){

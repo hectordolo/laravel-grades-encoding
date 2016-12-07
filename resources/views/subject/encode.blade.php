@@ -20,7 +20,9 @@
                         <div class="row" align="right">
                             <div class="col-lg-12">
                                 {!! Form::submit('Save', ['class' => 'btn btn-success']) !!}
+                                <a href="{{route('subject.view',[$section, $subject])}}" type="button" class="btn btn-primary" data-dismiss="modal">View</a>
                                 <a href="{{route('subject.index')}}" type="button" class="btn btn-default" data-dismiss="modal">Cancel</a>
+
                             </div>
                             <div class="col-md-1 col-sm-1 col-xs-12" hidden>
                                 <input type='text' value="{{$subject}}" name="subject" class = 'form-control col-xs-12'>
