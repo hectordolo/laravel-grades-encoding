@@ -10,6 +10,6 @@ class Subjects extends Model
 
     protected $connection = 'mysql_two';
 
-    
+
 
 }

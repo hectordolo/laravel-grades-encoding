@@ -7,6 +7,7 @@ use Auth;
 use App\Models\GlobalVar;
 use App\Models\Subjects;
 use App\Models\Registrations;
+use Illuminate\Support\Facades\DB;
 
 use Illuminate\Support\Facades\Input;
 
@@ -294,19 +295,112 @@ class SubjectController extends Controller
 
     public function view($section, $subject){
 
-        $students = Registrations::where('sectioncode', $section)
-            ->where('subjectcode', $subject)
+        $males = [];
+
+        $females = [];
+
+        $students = DB::connection('mysql_two')->table('registrations')
+            ->join('students', 'registrations.studentcode', '=', 'students.studentcode')
+            ->select('registrations.prelimgrade', 'registrations.midtermgrade', 'registrations.finalgrade', 'registrations.studentcode', 'students.lname', 'students.fname', 'students.sex', 'students.mname')
+            ->where('registrations.sectioncode', $section)
+            ->where('registrations.subjectcode', $subject)
+            ->orderBy('students.lname', 'ASC')
             ->get();
 
-        return view('subject.view', compact('section', 'subject', 'students'));
+        foreach($students as $student){
+
+            $average = ($student->prelimgrade+$student->midtermgrade+$student->finalgrade)/3;
+            $grade = 0;
+
+            if($average >= 97 && $average <= 100){
+                $grade = 1;
+            }else{
+                $grade = 'Fail';
+            }
+
+            if($student->sex==1){
+                $males[] = (object)['studentcode'=>$student->studentcode,
+                    'studentname'=>$student->lname.', '.$student->fname,
+                    'prelimgrade'=>$student->prelimgrade,
+                    'midtermgrade'=>$student->midtermgrade,
+                    'finalgrade'=>$student->finalgrade,
+                    'average' => $average,
+                    'grade' => $grade];
+            }else{
+                $females[] = (object)['studentcode'=>$student->studentcode,
+                    'studentname'=>$student->lname.', '.$student->fname,
+                    'prelimgrade'=>$student->prelimgrade,
+                    'midtermgrade'=>$student->midtermgrade,
+                    'finalgrade'=>$student->finalgrade,
+                    'average' => $average,
+                    'grade' => $grade];
+            }
+        }
+
+        return view('subject.view', compact('section', 'subject', 'males','females'));
     }
 
     public function encode($section, $subject){
 
-        $students = Registrations::where('sectioncode', $section)
-            ->where('subjectcode', $subject)
+        $males = [];
+
+        $females = [];
+
+        $students = DB::connection('mysql_two')->table('registrations')
+            ->join('students', 'registrations.studentcode', '=', 'students.studentcode')
+            ->select('registrations.prelimgrade', 'registrations.midtermgrade', 'registrations.finalgrade', 'registrations.studentcode', 'students.lname', 'students.fname', 'students.sex', 'students.mname')
+            ->where('registrations.sectioncode', $section)
+            ->where('registrations.subjectcode', $subject)
+            ->orderBy('students.lname', 'ASC')
             ->get();
 
-        return view('subject.encode', compact('section', 'subject', 'students'));
+        foreach($students as $student){
+
+
+
+            if($student->sex==1){
+                $males[] = (object)['studentcode'=>$student->studentcode,
+                                    'studentname'=>$student->lname.', '.$student->fname,
+                                    'prelimgrade'=>$student->prelimgrade,
+                                    'midtermgrade'=>$student->midtermgrade,
+                                    'finalgrade'=>$student->finalgrade];
+            }else{
+                $females[] = (object)['studentcode'=>$student->studentcode,
+                                    'studentname'=>$student->lname.', '.$student->fname,
+                                    'prelimgrade'=>$student->prelimgrade,
+                                    'midtermgrade'=>$student->midtermgrade,
+                                    'finalgrade'=>$student->finalgrade];
+            }
+        }
+
+        return view('subject.encode', compact('section', 'subject', 'males','females'));
+    }
+
+    public function update(Request $request){
+
+        $students = $request->get('students');
+        $subject = $request->get('subject');
+        $section = $request->get('section');
+
+        $prelimgrades = $request->get('prelimgrade');
+        $midtermgrades = $request->get('midtermgrade');
+        $finalgrades = $request->get('finalgrade');
+
+        foreach($students as $key=>$student){
+
+            $registration = Registrations::where('sectioncode', $section)
+                ->where('studentcode', $student)
+                ->where('subjectcode', $subject)
+                ->update(array(
+                    'prelimgrade' => !empty($prelimgrades[$student])?$prelimgrades[$student]: null,
+                    'midtermgrade' => !empty($midtermgrades[$student])?$midtermgrades[$student]: null,
+                    'finalgrade' => !empty($finalgrades[$student])?$finalgrades[$student]:null
+                ));
+
+        }
+
+        flash('Grades Updated.', 'success');
+        return redirect()->route('subject.encode',[$section, $subject]);
+
     }
 }

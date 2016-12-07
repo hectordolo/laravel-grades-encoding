@@ -10,4 +10,10 @@ class Registrations extends Model
 
     protected $connection = 'mysql_two';
 
+    protected $fillable = ['prelimgrade','midtermgrade','finalgrade'];
+
+    public function student(){
+        return $this->belongsTo('App\Models\Students', 'studentcode', 'studentcode');
+    }
+
 }

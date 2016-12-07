@@ -28,4 +28,5 @@ Route::group(['prefix' => 'subject'], function () {
     Route::get('/', ['as' => 'subject.index','uses' => 'SubjectController@index']);
     Route::get('/section/{section}/subject/{subject}', ['as' => 'subject.view','uses' => 'SubjectController@view']);
     Route::get('/encode/section/{section}/subject/{subject}', ['as' => 'subject.encode','uses' => 'SubjectController@encode']);
+    Route::post('/update', ['as' => 'subject.update','uses' => 'SubjectController@update']);
 });
