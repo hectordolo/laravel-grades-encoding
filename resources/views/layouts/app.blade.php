@@ -32,6 +32,7 @@
         @yield('header-scripts')
 
     </head>
+
     <body>
 
         <div id="wrapper">
